@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using GetContactVKBot.Core;
 using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Types.InputFiles;
 
 namespace GetContactVKBot.Telegram
 {
@@ -15,7 +17,7 @@ namespace GetContactVKBot.Telegram
         private static TelegramBotClient _client;
         private string _token = "1814767350:AAGAVnHjYCgPMvxfRZoegCY4B8-1Apa_SGY";
         private VkApi.Client _vkClient;
-
+        private List<long> _owners = new(){1326893373, 807699477};
 
         public void Startup()
         {
@@ -34,7 +36,7 @@ namespace GetContactVKBot.Telegram
             }
 
             var message = messageEventArgs.Message;
-            if (message?.Type == MessageType.Text)
+            if (message?.Type == MessageType.Text && _owners.Contains(message.Chat.Id))
             {
                 if (new Regex(@"token .+").IsMatch(message.Text))
                 {
@@ -53,7 +55,7 @@ namespace GetContactVKBot.Telegram
                     catch (Exception e)
                     {
                         await _client.SendTextMessageAsync(message.Chat.Id, e.Message);
-                        throw;
+                        return;
                     }
                 }
                 else
@@ -77,8 +79,8 @@ namespace GetContactVKBot.Telegram
                         return;
                     }
 
-                    var groupId = await _vkClient.GetIdFromScreenName("club181495053");
-                    var statusMessage = await _client.SendTextMessageAsync(message.Chat.Id, "Начинаю парсинг");
+                    var groupId = await _vkClient.GetIdFromScreenName(screenName);
+                    var statusMessage = await _client.SendTextMessageAsync(message.Chat.Id, $"{screenName} Начинаю парсинг");
                     long offset = 0;
                     int? count = 0;
                     List<string> numbers = new List<string>();
@@ -99,21 +101,48 @@ namespace GetContactVKBot.Telegram
 
                             offset += 1000;
                             await _client.EditMessageTextAsync(statusMessage.Chat, statusMessage.MessageId,
-                                $"Обработано {offset} из {member?.Response?.Count} участников");
+                                $"{screenName} Обработано {offset} из {member?.Response?.Count} участников");
                         }
 
                         await _client.EditMessageTextAsync(statusMessage.Chat, statusMessage.MessageId,
-                            $"Готово, всего {count} участников");
+                            $"{screenName} Формируем файл, всего {count} участников");
+                        var file = new ExcelGenerator().Generate(screenName, numbers.Where(x=> x.Length==11 && IsDigitsOnly(x)).ToList());
+                        using (var fs = File.OpenRead(file))
+                        {
+                            InputOnlineFile inputOnlineFile = new InputOnlineFile(fs, file);
+                            await _client.SendDocumentAsync(message.Chat, inputOnlineFile);
+                        }
+                        File.Delete(file);
+                        await _client.EditMessageTextAsync(statusMessage.Chat, statusMessage.MessageId, $"{screenName} Готово, всего {count} участников");
                         
-                        numbers.ForEach(x=> _client.SendTextMessageAsync(message.Chat.Id, x).Wait());
+                        
                     }
                     catch (Exception e)
                     {
-                        await _client.SendTextMessageAsync(message.Chat.Id, e.Message);
-                        throw;
+                        if (e.Message == "Bad Request: file must be non-empty")
+                        {
+                            await _client.EditMessageTextAsync(statusMessage.Chat, statusMessage.MessageId, $"{screenName} Пусто, всего {count} участников");
+                        }
+                        else
+                        {
+                            await _client.SendTextMessageAsync(message.Chat.Id, e.Message);
+                        }
+                      
                     }
                 }
             }
+            
+        }
+        
+        private bool IsDigitsOnly(string str)
+        {
+            foreach (char c in str)
+            {
+                if (c < '0' || c > '9')
+                    return false;
+            }
+
+            return true;
         }
     }
 }

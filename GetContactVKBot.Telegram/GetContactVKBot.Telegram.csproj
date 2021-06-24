@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Telegram.Bot" Version="16.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\GetContactVKBot.Core\GetContactVKBot.Core.csproj" />
+      <ProjectReference Include="..\GetContactVKBot.VkApi\GetContactVKBot.VkApi.csproj" />
+    </ItemGroup>
+
+</Project>

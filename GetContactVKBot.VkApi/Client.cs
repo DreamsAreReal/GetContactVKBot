@@ -12,7 +12,7 @@ namespace VkApi
     {
         private HttpClient _client;
         private string _token;
-        
+       
         public Client(string token)
         {
             _token = token;
@@ -34,8 +34,7 @@ namespace VkApi
                 list = JsonConvert.DeserializeObject<RootModel<ListModel<MemberModel>>>(answer);
                 yield return list;
                 offset += 1000;
-                Console.WriteLine($"{offset}<{list?.Response?.Count}");
-                await Task.Delay(2000);
+                await Task.Delay(335);
             } while (list != null && list?.Response?.Count>offset);
             
         }
