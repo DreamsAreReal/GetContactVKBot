@@ -7,6 +7,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\GetContactVKBot.Core\GetContactVKBot.Core.csproj" />
+      <ProjectReference Include="..\GetContactVKBot.Telegram\GetContactVKBot.Telegram.csproj" />
       <ProjectReference Include="..\GetContactVKBot.VkApi\GetContactVKBot.VkApi.csproj" />
     </ItemGroup>
 

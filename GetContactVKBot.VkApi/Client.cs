@@ -23,7 +23,7 @@ namespace VkApi
         {
             if (model.Type != "group")
             {
-                throw new Exception("GetMembers can parse from group only");
+                throw new Exception("Нужен id группы");
             }
 
             RootModel<ListModel<MemberModel>> list;

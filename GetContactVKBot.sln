@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetContactVKBot.VkApi", "Ge
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetContactVKBot.Core", "GetContactVKBot.Core\GetContactVKBot.Core.csproj", "{D3FE19F3-9A6A-4279-9A9C-A73D5D8A49FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetContactVKBot.Telegram", "GetContactVKBot.Telegram\GetContactVKBot.Telegram.csproj", "{F3A23040-3452-418E-A206-B3224A9B7FE5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{D3FE19F3-9A6A-4279-9A9C-A73D5D8A49FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3FE19F3-9A6A-4279-9A9C-A73D5D8A49FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3FE19F3-9A6A-4279-9A9C-A73D5D8A49FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3A23040-3452-418E-A206-B3224A9B7FE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3A23040-3452-418E-A206-B3224A9B7FE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3A23040-3452-418E-A206-B3224A9B7FE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3A23040-3452-418E-A206-B3224A9B7FE5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
