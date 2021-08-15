@@ -15,7 +15,7 @@ namespace GetContactVKBot.Telegram
     {
         
         private static TelegramBotClient _client;
-        private string _token = "1814767350:AAGAVnHjYCgPMvxfRZoegCY4B8-1Apa_SGY";
+        private string _token = "";
         private VkApi.Client _vkClient;
         private List<long> _owners = new(){1326893373, 807699477};
 
